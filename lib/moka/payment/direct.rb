@@ -7,7 +7,7 @@ module Moka
     class Direct
       attr_accessor :dealer_code, :username, :password, :check_key,
                     :card_holder_full_name, :card_number, :exp_month,
-                    :exp_year, :cvc_number, :amount, :currency, :installment_number,
+                    :exp_year, :cvc_number, :card_token, :amount, :currency, :installment_number,
                     :client_ip, :other_trx_code, :is_pre_auth, :is_pool_payment,
                     :integrator_id, :software, :description, :sub_merchant_name,
                     :buyer_full_name, :buyer_email, :buyer_gsm_number, :buyer_address
@@ -23,6 +23,7 @@ module Moka
         @exp_month = details[:exp_month]
         @exp_year = details[:exp_year]
         @cvc_number = details[:cvc_number]
+        @card_token = details[:card_token]
         @amount = details[:amount]
         @currency = details[:currency] || "USD"
         @installment_number = details[:installment_number] || 1
@@ -41,11 +42,17 @@ module Moka
       end
 
       def pay
-        return raise Moka::Error::NullPaymentInformation if [ # Bu parametlerden hec biri bos gelmemelidi xetasi
+        non_blank_details = [
           @dealer_code, @username, @password, @check_key,
-          @card_holder_full_name, @card_number, @exp_month, @exp_year,
-          @cvc_number, @amount
-        ].any? { |detail| detail.nil? }
+          @card_holder_full_name, @card_token, @amount
+        ]
+
+        unless @card_token
+          non_blank_details.delete(@card_token)
+          non_blank_details.push(@card_number, @exp_month, @exp_year, @cvc_number)
+        end
+
+        return raise Moka::Error::NullPaymentInformation if non_blank_details.any? {|detail| detail.nil?}
         @response = Moka::Request.direct_payment(@@payment_details)
         @error = Moka::Error::RequestError.new
         @error.message = @response["ResultCode"] unless @response["Data"]
@@ -68,7 +75,7 @@ module Moka
         end
         return false
       end
-
+      
     end
   end
 end

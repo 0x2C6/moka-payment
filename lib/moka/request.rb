@@ -35,6 +35,10 @@ module Moka
         "IsPreAuth": payment_details.is_pre_auth
       }
 
+      ["CardNumber", "ExpMonth", "ExpMonth", "CvcNumber"].each do |detail|
+        payment_dealer_request.delete(detail.to_sym)
+      end && payment_dealer_request["CardToken"] = payment_details.card_token if payment_details.card_token
+
       payment_dealer_request["ClientIP"] = payment_details.client_ip if payment_details.client_ip
       payment_dealer_request["OtherTrxCode"] = payment_details.other_trx_code if payment_details.other_trx_code
       payment_dealer_request["IsPoolPayment"] = payment_details.is_pool_payment if payment_details.is_pool_payment
