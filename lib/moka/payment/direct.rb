@@ -16,6 +16,13 @@ module Moka
         super @payment_details
       end
 
+      def success?
+        if @response["Data"]
+          return true if @response["Data"]["IsSuccessful"]
+        end
+        return false
+      end
+
     end
   end
 end

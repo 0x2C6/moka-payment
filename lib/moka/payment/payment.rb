@@ -7,8 +7,8 @@ module Moka
     class Payment
 
       attr_accessor :dealer_code, :username, :password, :check_key,
-                    :card_holder_full_name, :card_number, :exp_month,
-                    :exp_year, :cvc_number, :card_token, :amount, :currency, :installment_number,
+                    :card_holder_full_name, :card_number, :exp_month, :exp_year,
+                    :cvc_number, :card_token, :amount, :currency, :redirect_url, :installment_number,
                     :client_ip, :other_trx_code, :is_pre_auth, :is_pool_payment,
                     :integrator_id, :software, :description, :sub_merchant_name,
                     :buyer_full_name, :buyer_email, :buyer_gsm_number, :buyer_address
@@ -27,6 +27,7 @@ module Moka
         @card_token = details[:card_token]
         @amount = details[:amount]
         @currency = details[:currency] || "USD"
+        @redirect_url = details[:redirect_url]
         @installment_number = details[:installment_number] || 1
         @client_ip = details[:client_ip]
         @other_trx_code = details[:other_trx_code]
@@ -42,7 +43,11 @@ module Moka
         @buyer_address = details[:buyer_address]
       end
 
+
       def pay
+        #return raise Moka::Error::NullRedirectUrl if
+        return raise Moka::Error::NullRedirectUrl if @@payment_details.is_a?(Moka::Payment::Direct3D) &&
+        @@payment_details.redirect_url.nil?
         non_blank_details = [
           @dealer_code, @username, @password, @check_key,
           @card_holder_full_name, @card_token, @amount
@@ -62,19 +67,20 @@ module Moka
 
       def self.payment_details(payment_details)
         @@payment_details = payment_details
-        yield @@payment_details
+        yield @@payment_details if block_given?
         return @@payment_details
+      end
+
+      def response
+
+      end
+
+      def details
+        @@payment_details
       end
 
       def errors
         @error
-      end
-
-      def success?
-        if @response["Data"]
-          return true if @response["Data"]["IsSuccessful"]
-        end
-        return false
       end
 
     end

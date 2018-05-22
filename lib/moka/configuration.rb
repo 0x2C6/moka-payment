@@ -2,7 +2,7 @@ require 'moka/dealer'
 
 module Moka
   module Configuration
-    
+
     def configure
       @config = Moka::Dealer.new
       yield @config if block_given?

@@ -5,5 +5,5 @@ require 'moka/payment/direct'
 require 'moka/payment/direct3d'
 
 module Moka
-    extend Configuration
+  extend Configuration
 end
