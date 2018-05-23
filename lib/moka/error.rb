@@ -14,5 +14,7 @@ module Moka
 
     class NullPaymentInformation < StandardError; end
     class NullRedirectUrl < StandardError; end
+    class NotDirectOrDirect3DPayment < StandardError; end
+    class NotCapturePayment < StandardError; end
   end
 end

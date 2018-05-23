@@ -40,7 +40,7 @@ get '/' do
   @direct_payment.pay
   puts @direct_payment.response
   if @direct_payment.success?
-    redirect @direct_payment.varify_payment_url
+    redirect @direct_payment.verify_payment_url
   end
 end
 
