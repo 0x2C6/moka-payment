@@ -1,28 +1,61 @@
 # Moka
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/moka`. To experiment with that code, run `bin/console` for an interactive prompt.
+MOKA ile ödeme alma, ödeme isteği gönderme, kart saklama servisleri ve tekrarlayan ödeme servisleri ile ödemelerinizi alabilirsiniz.
+[Üye](https://mokapos.moka.com/) olun Moka yı kullanmaya hemen başlayın!
 
-TODO: Delete this and the text above, and describe your gem
+## Kurulum
 
-## Installation
-
-Add this line to your application's Gemfile:
+Moka yı Gemfile içine dahil edin
 
 ```ruby
-gem 'moka'
+gem 'moka-payment'
 ```
 
-And then execute:
+Gerekli paketlerin tamamen kurulduğundan emin olun
 
     $ bundle
 
-Or install it yourself as:
+Ve ya kendiniz kurun
 
     $ gem install moka
 
-## Usage
+## Kullanım
+İlk önce Moka dan aldığınız Bayi id Kullanıcı Adı ve Şifrenizi tanıtmanız gerekiyor
 
-TODO: Write usage instructions here
+```ruby
+Moka.configure do |config|
+  config.dealer_code = "123456"
+  config.username = "ZXCVBNVBN"
+  config.password = "abcdef"
+end
+```
+Şimdi ilk ödememizi yapa biliriz
+```ruby
+@payment = Moka::Payment::Direct.details do |detail|
+  detail.card_holder_full_name = "Ali Yılmaz"
+  detail.card_number = "5269552233334444"
+  detail.exp_month = "12"
+  detail.exp_year = "2022"
+  detail.cvc_number = "123"
+  detail.amount = 35.5
+  detail.currency = "TL"
+  detail.client_ip = "195.155.96.234"
+  detail.software = "OpenCart"
+  detail.sub_merchant_name = "Company"
+  detail.description = "Test Description"
+  detail.buyer_full_name = "Elif Yetimoğlu"
+  detail.buyer_email = "test@test.com"
+  detail.buyer_gsm_number = "1111111111"
+  detail.buyer_address = "New York City"
+end
+
+@payment.pay
+
+if @payment.success?
+    puts "Ödeme başarı ile tamamlanmıştır"
+end
+```
+Daha detaylı bilgi için wiki kısmına ve resmi Moka Dokümantasyonuna göz atın.
 
 ## Development
 
