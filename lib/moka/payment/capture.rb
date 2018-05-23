@@ -21,6 +21,8 @@ module Moka
 
       def capture
         @response = Moka::Request.capture(@@capture_details)
+        @error = Moka::Error::RequestError.new
+        @error.message = @response["ResultCode"] unless @response["Data"]
         return @response
       end
 
