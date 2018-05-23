@@ -29,7 +29,6 @@ class MokaDirectPaymentTest < Moka::Test
 
   def test_should_pay_direct_successfully
     @direct_payment.pay
-    puts @direct_payment.response
     assert @direct_payment.success?
     assert !@direct_payment.errors.message
   end

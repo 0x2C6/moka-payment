@@ -9,6 +9,7 @@ module Moka
 
       class << self
         def paid_successfully?(params)
+          #TODO burdan qayidan hersey ucun xeta kodu var olari hamsini add ele
           unless params["isSuccessful"] == "False"
             return params
           end
