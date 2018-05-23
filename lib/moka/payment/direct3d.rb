@@ -7,6 +7,15 @@ module Moka
   module Payment
     class Direct3D < Moka::Payment::Payment
 
+      class << self
+        def paid_successfully?(params)
+          unless params["isSuccessful"] == "False"
+            return params
+          end
+          return false
+        end
+      end
+
       def initialize(details={})
         super details
       end
@@ -19,6 +28,11 @@ module Moka
       def success?
        return true if @response["ResultCode"] == "Success"
        return false
+      end
+
+      def varify_payment_url
+        return @response["Data"] if @response["Data"]
+        return false
       end
 
     end

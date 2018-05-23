@@ -30,7 +30,9 @@ class MokaDirect3DPaymentTest < Moka::Test
 
   def test_should_pay_direct3d_successfully
     @direct_payment.pay
+    puts @direct_payment.response
     assert @direct_payment.success?
+    puts @direct_payment.redirect_if_success
   end
 
   def test_should_raise_null_redirect_url

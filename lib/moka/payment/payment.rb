@@ -58,6 +58,12 @@ module Moka
           non_blank_details.push(@card_number, @exp_month, @exp_year, @cvc_number)
         end
 
+        if @@payment_details.is_a? Moka::Payment::Direct3D
+          non_blank_details.push(@redirect_url)
+        else
+          @@payment_details.redirect_url = nil
+        end
+
         return raise Moka::Error::NullPaymentInformation if non_blank_details.any? {|detail| detail.nil?}
         @response = Moka::Request.direct_payment(@@payment_details)
         @error = Moka::Error::RequestError.new
@@ -72,7 +78,7 @@ module Moka
       end
 
       def response
-
+        @response
       end
 
       def details
@@ -82,7 +88,6 @@ module Moka
       def errors
         @error
       end
-
     end
   end
 end
