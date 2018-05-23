@@ -1,10 +1,13 @@
 require 'rest-client'
 require 'json'
+require 'pp'
 
 module Moka
   module Request
     DIRECT_PAYMENT_URL = "https://service.testmoka.com/PaymentDealer/DoDirectPayment"
     DIRECT3D_PAYMENT_URL = "https://service.testmoka.com/PaymentDealer/DoDirectPaymentThreeD"
+    CAPTURE_PAYMENT_URL = "https://service.testmoka.com/PaymentDealer/DoCapture"
+
     class << self
 
       def get_check_key(dealer_code, username, password)
@@ -56,7 +59,6 @@ module Moka
         buyer_information["BuyerGsmNumber"] = payment_details.buyer_gsm_number if payment_details.buyer_gsm_number
         buyer_information["BuyerAddress"] = payment_details.buyer_address if payment_details.buyer_address
 
-
         response = RestClient.post payment_details.redirect_url ? DIRECT3D_PAYMENT_URL : DIRECT_PAYMENT_URL,
         {
           "PaymentDealerAuthentication": payment_dealer_authentication,
@@ -66,7 +68,30 @@ module Moka
         return JSON.parse(response.body)
       end
 
-    end
+      def capture(capture_details)
+        payment_dealer_authentication = {
+          "DealerCode": capture_details.dealer_code,
+          "Username": capture_details.username,
+          "Password": capture_details.password,
+          "CheckKey": capture_details.check_key
+        }
 
+        payment_dealer_request = {
+          "VirtualPosOrderId": capture_details.virtual_pos_order_id,
+          "OtherTrxCode": capture_details.other_trx_code || "",
+          "Amount": capture_details.amount,
+          "ClientIP": capture_details.client_ip
+        }
+
+        response = RestClient.post CAPTURE_PAYMENT_URL,
+        {
+          "PaymentDealerAuthentication": payment_dealer_authentication,
+          "PaymentDealerRequest": payment_dealer_request
+        }
+        return JSON.parse(response.body)
+      end
+
+
+    end
   end
 end

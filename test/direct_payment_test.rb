@@ -3,7 +3,7 @@ require "moka_test"
 class MokaDirectPaymentTest < Moka::Test
   def setup
     super
-    @direct_payment = Moka::Payment::Direct.payment_details do |detail|
+    @direct_payment = Moka::Payment::Direct.details do |detail|
       detail.card_holder_full_name = "Ali Yılmaz"
       detail.card_number = "5269552233334444"
       detail.exp_month = "12"
@@ -39,7 +39,7 @@ class MokaDirectPaymentTest < Moka::Test
     assert !@direct_payment.success?
   end
 
-  def test_should_return_request_error
+  def test_should_raise_request_error
     @direct_payment.card_number = "5555666677778888"
     @direct_payment.pay
     assert_equal @direct_payment.errors.message, "PaymentDealer.CheckCardInfo.InvalidCardInfo"

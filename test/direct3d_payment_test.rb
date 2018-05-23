@@ -3,7 +3,7 @@ require "moka_test"
 class MokaDirect3DPaymentTest < Moka::Test
   def setup
     super
-    @direct_payment = Moka::Payment::Direct3D.payment_details do |detail|
+    @direct_payment = Moka::Payment::Direct3D.details do |detail|
       detail.card_holder_full_name = "Ali Yılmaz"
       detail.card_number = "5269552233334444"
       detail.exp_month = "12"
@@ -39,4 +39,5 @@ class MokaDirect3DPaymentTest < Moka::Test
       @direct_payment.pay
     end
   end
+
 end
