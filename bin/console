@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
+$: << "../lib"
 require "bundler/setup"
+Bundler.require
 require "moka"
 
 # You can add fixtures and/or initialization code here to make experimenting
@@ -10,5 +12,5 @@ require "moka"
 # require "pry"
 # Pry.start
 
-require "pry"
-Pry.start
+require "irb"
+IRB.start

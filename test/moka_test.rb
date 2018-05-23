@@ -3,7 +3,7 @@ require 'pp'
 
 module Moka
   class Test < Minitest::Test
-
+    include Minitest::Hooks
     def setup
       Moka.configure do |config|
         config.dealer_code = "1730"
@@ -18,6 +18,5 @@ module Moka
       assert_equal Moka.config.password, "YHSUSHDYHUDHD"
       assert_equal Moka.config.check_key, "73bbf2fc412ed0eaf47796e2784fbb86b60267da84c92a17d8ddb408cb5a6461"
     end
-    
   end
 end

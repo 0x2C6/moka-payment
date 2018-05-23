@@ -13,6 +13,6 @@ module Moka
     end
 
     class NullPaymentInformation < StandardError; end
-
+    class NullRedirectUrl < StandardError; end
   end
 end
