@@ -4,9 +4,11 @@ require 'pp'
 
 module Moka
   module Request
-    DIRECT_PAYMENT_URL = "https://service.testmoka.com/PaymentDealer/DoDirectPayment"
-    DIRECT3D_PAYMENT_URL = "https://service.testmoka.com/PaymentDealer/DoDirectPaymentThreeD"
-    CAPTURE_PAYMENT_URL = "https://service.testmoka.com/PaymentDealer/DoCapture"
+    SERVICE_URL = "https://service.testmoka.com"
+    DIRECT_PAYMENT_URL = "#{SERVICE_URL}/PaymentDealer/DoDirectPayment"
+    DIRECT3D_PAYMENT_URL = "#{SERVICE_URL}/PaymentDealer/DoDirectPaymentThreeD"
+    CAPTURE_PAYMENT_URL = "#{SERVICE_URL}/PaymentDealer/DoCapture"
+    GET_PAYMENT_LIST_URL = "#{SERVICE_URL}//PaymentDealer/GetPaymentList"
 
     class << self
 
@@ -84,6 +86,29 @@ module Moka
         }
 
         response = RestClient.post CAPTURE_PAYMENT_URL,
+        {
+          "PaymentDealerAuthentication": payment_dealer_authentication,
+          "PaymentDealerRequest": payment_dealer_request
+        }
+        return JSON.parse(response.body)
+      end
+
+      def get_payment_list(payment_list_details)
+        payment_dealer_authentication = {
+          "DealerCode": payment_list_details.dealer_code,
+          "Username": payment_list_details.username,
+          "Password": payment_list_details.password,
+          "CheckKey": payment_list_details.check_key
+        }
+
+        payment_dealer_request = {
+          "PaymentStartDate": payment_list_details.payment_start_date,
+          "PaymentEndDate": payment_list_details.payment_end_date,
+        }
+        payment_dealer_request["PaymentStatus"] = payment_list_details.payment_status.to_i if payment_list_details.payment_status
+        payment_dealer_request["TrxStatus"] = payment_list_details.trx_status.to_i if payment_list_details.trx_status
+
+        response = RestClient.post GET_PAYMENT_LIST_URL,
         {
           "PaymentDealerAuthentication": payment_dealer_authentication,
           "PaymentDealerRequest": payment_dealer_request
