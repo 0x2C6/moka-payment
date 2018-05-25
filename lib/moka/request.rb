@@ -8,7 +8,8 @@ module Moka
     DIRECT_PAYMENT_URL = "#{SERVICE_URL}/PaymentDealer/DoDirectPayment"
     DIRECT3D_PAYMENT_URL = "#{SERVICE_URL}/PaymentDealer/DoDirectPaymentThreeD"
     CAPTURE_PAYMENT_URL = "#{SERVICE_URL}/PaymentDealer/DoCapture"
-    GET_PAYMENT_LIST_URL = "#{SERVICE_URL}//PaymentDealer/GetPaymentList"
+    GET_PAYMENT_LIST_URL = "#{SERVICE_URL}/PaymentDealer/GetPaymentList"
+    ADD_CUSTOMER_URL = "#{SERVICE_URL}/DealerCustomer/AddCustomer"
 
     class << self
 
@@ -116,6 +117,33 @@ module Moka
         return JSON.parse(response.body)
       end
 
+      def add_user(customer_details)
+        dealer_customer_authentication = {
+          "DealerCode": customer_details.dealer_code,
+          "Username": customer_details.username,
+          "Password": customer_details.password,
+          "CheckKey": customer_details.check_key
+        }
+
+        dealer_customer_request = {
+          "CustomerCode": customer_details.customer_code,
+      		"Password": customer_details.customer_password,
+      		"FirstName": customer_details.first_name,
+      		"LastName": customer_details.last_name,
+      		"Gender": customer_details.gender,
+      		"BirthDate": customer_details.birth_date,
+      		"GsmNumber": customer_details.gsm_number,
+      		"Email": customer_details.email,
+      		"Address": customer_details.address
+        }
+
+        response = RestClient.post ADD_CUSTOMER_URL,
+        {
+          "DealerCustomerAuthentication": dealer_customer_authentication,
+          "DealerCustomerRequest": dealer_customer_request
+        }
+        return JSON.parse(response.body)
+      end
 
     end
   end
