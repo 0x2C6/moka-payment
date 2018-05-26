@@ -1,4 +1,4 @@
-# Moka
+# Moka [![Progress](http://progressed.io/bar/12?title=completed)](http://progressed.io/bar/12?title=completed)
 
 MOKA ile ödeme alma, ödeme isteği gönderme, kart saklama servisleri ve tekrarlayan ödeme servisleri ile ödemelerinizi alabilirsiniz.
 [Üye](https://mokapos.moka.com/) olun Moka yı kullanmaya hemen başlayın!
