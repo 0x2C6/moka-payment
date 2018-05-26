@@ -60,7 +60,7 @@ Daha detaylı bilgi için wiki kısmına ve resmi Moka dökümantasyonuna göz a
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/0x2C6/moka-paymen.
+Bug reports and pull requests are welcome on GitHub at https://github.com/0x2C6/moka-payment.
 
 ## License
 
