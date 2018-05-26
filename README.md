@@ -24,6 +24,8 @@ Veya kendiniz kurun
 İlk önce Moka'dan aldığınız bayi numarasını, kullanıcı adınızı ve parolanızı tanıtmanız gerekiyor
 
 ```ruby
+require 'moka'
+
 Moka.configure do |config|
   config.dealer_code = "123456"
   config.username = "ZXCVBNVBN"
