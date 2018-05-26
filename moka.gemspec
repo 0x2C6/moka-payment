@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Ruby gem for Moka payment system}
   # spec.description   = %q{}
-  spec.homepage      = "https://github.com/0x2C6/LookupIP/"
+  spec.homepage      = "https://github.com/0x2C6/moka-payment"
   spec.license       = "MIT"
 
   # # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
