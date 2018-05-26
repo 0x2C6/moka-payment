@@ -52,7 +52,6 @@ module Moka
         return 0
       end
 
-
     end
   end
 end
