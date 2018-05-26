@@ -1,11 +1,12 @@
 # Moka
+[![Progress](http://progressed.io/bar/12?title=completed)](http://progressed.io/bar/12?title=completed)
 
-MOKA ile ödeme alma, ödeme isteği gönderme, kart saklama servisleri ve tekrarlayan ödeme servisleri ile ödemelerinizi alabilirsiniz.
-[Üye](https://mokapos.moka.com/) olun Moka yı kullanmaya hemen başlayın!
+MOKA'nın ödeme alma, ödeme isteği gönderme, kart saklama ve tekrarlayan ödeme servisleri ile ödemelerinizi alabilirsiniz.
+[Üye](https://mokapos.moka.com/) olun ve Moka'yı kullanmaya hemen başlayın!
 
 ## Kurulum
 
-Moka yı Gemfile içine dahil edin
+Moka'yı Gemfile içine dahil edin
 
 ```ruby
 gem 'moka-payment'
@@ -15,12 +16,12 @@ Gerekli paketlerin tamamen kurulduğundan emin olun
 
     $ bundle
 
-Ve ya kendiniz kurun
+Veya kendiniz kurun
 
     $ gem install moka
 
 ## Kullanım
-İlk önce Moka dan aldığınız Bayi id Kullanıcı Adı ve Şifrenizi tanıtmanız gerekiyor
+İlk önce Moka'dan aldığınız bayi numarasını, kullanıcı adınızı ve parolanızı tanıtmanız gerekiyor
 
 ```ruby
 Moka.configure do |config|
@@ -29,7 +30,7 @@ Moka.configure do |config|
   config.password = "abcdef"
 end
 ```
-Şimdi ilk ödememizi yapa biliriz
+Şimdi ilk ödememizi yapabiliriz
 ```ruby
 @payment = Moka::Payment::Direct.details do |detail|
   detail.card_holder_full_name = "Ali Yılmaz"
@@ -55,17 +56,11 @@ if @payment.success?
     puts "Ödeme başarı ile tamamlanmıştır"
 end
 ```
-Daha detaylı bilgi için wiki kısmına ve resmi Moka Dokümantasyonuna göz atın.
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Daha detaylı bilgi için wiki kısmına ve resmi Moka dökümantasyonuna göz atın.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/moka.
+Bug reports and pull requests are welcome on GitHub at https://github.com/0x2C6/moka-paymen.
 
 ## License
 
