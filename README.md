@@ -18,7 +18,7 @@ Gerekli paketlerin tamamen kurulduğundan emin olun
 
 Veya kendiniz kurun
 
-    $ gem install moka
+    $ gem install moka-payment
 
 ## Kullanım
 İlk önce Moka'dan aldığınız bayi numarasını, kullanıcı adınızı ve parolanızı tanıtmanız gerekiyor
