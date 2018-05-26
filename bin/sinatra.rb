@@ -9,9 +9,9 @@ require "sinatra"
 
 get '/' do
   Moka.configure do |config|
-    config.dealer_code = "1730"
-    config.username = "TestKorhan"
-    config.password = "YHSUSHDYHUDHD"
+    config.dealer_code = ENV['MOKA_DEALER_CODE']
+    config.username = ENV['MOKA_USERNAME']
+    config.password = ENV['MOKA_PASSWORD']
   end
 
   @direct_payment = Moka::Payment::Direct3D.payment_details do |detail|
@@ -46,10 +46,8 @@ end
 
 post '/payment' do
   if Moka::Payment::Direct3D.paid_successfully?(params)
-    puts params
     "Paid Succesfully"
   else
-    puts params
     "Payment Declined"
   end
 end
