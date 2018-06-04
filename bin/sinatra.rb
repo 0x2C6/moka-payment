@@ -14,7 +14,7 @@ get '/' do
     config.password = ENV['MOKA_PASSWORD']
   end
 
-  @direct_payment = Moka::Payment::Direct3D.payment_details do |detail|
+  @direct_payment = Moka::Payment::Direct3D.details do |detail|
     detail.card_holder_full_name = "Ali Yılmaz"
     detail.card_number = "5269552233334444"
     detail.exp_month = "12"
