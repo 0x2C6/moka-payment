@@ -9,7 +9,7 @@ MOKA'nın ödeme alma, ödeme isteği gönderme, kart saklama ve tekrarlayan öd
 Moka'yı Gemfile içine dahil edin
 
 ```ruby
-gem 'moka-payment'
+gem 'moka-payment', :require => 'moka'
 ```
 
 Gerekli paketlerin tamamen kurulduğundan emin olun
