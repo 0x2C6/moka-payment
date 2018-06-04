@@ -4,7 +4,8 @@ require 'pp'
 
 module Moka
   module Request
-    SERVICE_URL = "https://service.testmoka.com"
+    TEST_SERVICE_URL = "https://service.testmoka.com"
+    SERVICE_URL = "https://service.moka.com"
     DIRECT_PAYMENT_URL = "#{SERVICE_URL}/PaymentDealer/DoDirectPayment"
     DIRECT3D_PAYMENT_URL = "#{SERVICE_URL}/PaymentDealer/DoDirectPaymentThreeD"
     CAPTURE_PAYMENT_URL = "#{SERVICE_URL}/PaymentDealer/DoCapture"
