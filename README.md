@@ -1,5 +1,6 @@
 # Moka
 [![Progress](http://progressed.io/bar/12?title=completed)](http://progressed.io/bar/12?title=completed) [![Gem Version](https://badge.fury.io/rb/moka-payment.svg)](https://badge.fury.io/rb/moka-payment)
+## Proje Moka nın destek vermemesinden dolayı yarıda kalmıştır.
 
 MOKA'nın ödeme alma, ödeme isteği gönderme, kart saklama ve tekrarlayan ödeme servisleri ile ödemelerinizi alabilirsiniz.
 [Üye](https://mokapos.moka.com/) olun ve Moka'yı kullanmaya hemen başlayın!
