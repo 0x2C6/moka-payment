@@ -3,12 +3,13 @@ require 'moka/error'
 
 module Moka
   class Dealer
-    attr_accessor :dealer_code, :username, :password, :check_key
+    attr_accessor :dealer_code, :username, :password, :env, :check_key
 
-    def initialize(dealer_code = nil, username = nil, password = nil)
+    def initialize(dealer_code = nil, username = nil, password = nil, env = nil)
       @dealer_code = dealer_code
       @username = username
       @password = password
+      @env = env
     end
 
     def get_check_key
@@ -17,6 +18,5 @@ module Moka
         ).body unless [ @dealer_code, @username, @password ].any? { |key| key.nil? }
       raise "Error" # Hamsi gonderilmelidi ona uygun xeta yarad
     end
-
   end
 end

@@ -5,7 +5,7 @@ require 'moka/error'
 module Moka
   module Payment
     class Payment
-      attr_accessor :dealer_code, :username, :password, :check_key,
+      attr_accessor :dealer_code, :username, :password, :check_key, :env,
                     :card_holder_full_name, :card_number, :exp_month, :exp_year,
                     :cvc_number, :card_token, :amount, :currency, :redirect_url, :installment_number,
                     :client_ip, :other_trx_code, :is_pre_auth, :is_pool_payment,
@@ -17,6 +17,7 @@ module Moka
         @username = Moka.config.username
         @password = Moka.config.password
         @check_key = Moka.config.check_key
+        @env = Moka.config.env
       end
 
       def pay

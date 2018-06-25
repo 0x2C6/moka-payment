@@ -1,10 +1,12 @@
 require 'moka/dealer'
+require 'moka/request'
 
 module Moka
   module Configuration
-
-    def configure
+    def configure(options = { env: ENV['RACK_ENV'] })
       @config = Moka::Dealer.new
+      @config.env = options[:env] ? options[:env].to_s : 'production'
+      Moka::Request::set_url(@config.env)
       yield @config if block_given?
       @config.get_check_key
     end
@@ -12,6 +14,5 @@ module Moka
     def config
       @config if @config
     end
-
   end
 end
