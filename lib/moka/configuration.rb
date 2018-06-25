@@ -6,7 +6,7 @@ module Moka
     def configure(options = { env: ENV['RACK_ENV'] })
       @config = Moka::Dealer.new
       @config.env = options[:env] ? options[:env].to_s : 'production'
-      Moka::Request::set_url(@config.env)
+      Moka::Request::set_env
       yield @config if block_given?
       @config.get_check_key
     end
