@@ -15,6 +15,7 @@ module Moka
         @amount = details[:amount]
         @currency = details[:currency] || "USD"
         @redirect_url = details[:redirect_url]
+        @redirect_type = details[:redirect_type]
         @installment_number = details[:installment_number] || 1
         @client_ip = details[:client_ip]
         @other_trx_code = details[:other_trx_code]
@@ -54,7 +55,6 @@ module Moka
           @payment_details = Moka::Payment::Direct3D.new
           super @payment_details
         end
-
       end
     end
   end

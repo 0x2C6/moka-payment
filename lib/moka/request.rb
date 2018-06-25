@@ -6,7 +6,10 @@ module Moka
   module Request
     class << self  
       def set_env
-        $SERVICE_URL = Moka.config.env == 'production' ? "https://service.moka.com" :  "https://service.testmoka.com"
+        $SERVICE_URL = Moka.config.env == 'production' ? 
+        "https://service.moka.com" :
+        "https://service.testmoka.com"
+
         $DIRECT_PAYMENT_URL = "#{$SERVICE_URL}/PaymentDealer/DoDirectPayment"
         $DIRECT3D_PAYMENT_URL = "#{$SERVICE_URL}/PaymentDealer/DoDirectPaymentThreeD"
         $CAPTURE_PAYMENT_URL = "#{$SERVICE_URL}/PaymentDealer/DoCapture"
@@ -50,6 +53,7 @@ module Moka
         end && payment_dealer_request["CardToken"] = payment_details.card_token if payment_details.card_token
 
         payment_dealer_request["RedirectUrl"] = payment_details.redirect_url if payment_details.redirect_url
+        payment_dealer_request["RedirectType "] = payment_details.redirect_type if payment_details.redirect_type
         payment_dealer_request["ClientIP"] = payment_details.client_ip if payment_details.client_ip
         payment_dealer_request["OtherTrxCode"] = payment_details.other_trx_code if payment_details.other_trx_code
         payment_dealer_request["IsPoolPayment"] = payment_details.is_pool_payment if payment_details.is_pool_payment
