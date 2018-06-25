@@ -5,8 +5,8 @@ require 'pp'
 module Moka
   module Request
     class << self  
-      def set_url(env)
-        $SERVICE_URL = env == 'production' ? "https://service.moka.com" :  "https://service.testmoka.com"
+      def set_env
+        $SERVICE_URL = Moka.config.env == 'production' ? "https://service.moka.com" :  "https://service.testmoka.com"
         $DIRECT_PAYMENT_URL = "#{$SERVICE_URL}/PaymentDealer/DoDirectPayment"
         $DIRECT3D_PAYMENT_URL = "#{$SERVICE_URL}/PaymentDealer/DoDirectPaymentThreeD"
         $CAPTURE_PAYMENT_URL = "#{$SERVICE_URL}/PaymentDealer/DoCapture"
