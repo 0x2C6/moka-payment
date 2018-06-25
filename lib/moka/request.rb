@@ -4,15 +4,15 @@ require 'pp'
 
 module Moka
   module Request
-    TEST_SERVICE_URL = "https://service.testmoka.com"
-    SERVICE_URL = "https://service.moka.com"
-    DIRECT_PAYMENT_URL = "#{SERVICE_URL}/PaymentDealer/DoDirectPayment"
-    DIRECT3D_PAYMENT_URL = "#{SERVICE_URL}/PaymentDealer/DoDirectPaymentThreeD"
-    CAPTURE_PAYMENT_URL = "#{SERVICE_URL}/PaymentDealer/DoCapture"
-    GET_PAYMENT_LIST_URL = "#{SERVICE_URL}/PaymentDealer/GetPaymentList"
-    ADD_CUSTOMER_URL = "#{SERVICE_URL}/DealerCustomer/AddCustomer"
-
-    class << self
+    class << self  
+      def set_url(env)
+        $SERVICE_URL = env == 'production' ? "https://service.moka.com" :  "https://service.testmoka.com"
+        $DIRECT_PAYMENT_URL = "#{$SERVICE_URL}/PaymentDealer/DoDirectPayment"
+        $DIRECT3D_PAYMENT_URL = "#{$SERVICE_URL}/PaymentDealer/DoDirectPaymentThreeD"
+        $CAPTURE_PAYMENT_URL = "#{$SERVICE_URL}/PaymentDealer/DoCapture"
+        $GET_PAYMENT_LIST_URL = "#{$SERVICE_URL}/PaymentDealer/GetPaymentList"
+        $ADD_CUSTOMER_URL = "#{$SERVICE_URL}/DealerCustomer/AddCustomer"
+      end
 
       def get_check_key(dealer_code, username, password)
         RestClient.get 'http://developer.moka.com/pages/checkkey.php',
@@ -63,7 +63,7 @@ module Moka
         buyer_information["BuyerGsmNumber"] = payment_details.buyer_gsm_number if payment_details.buyer_gsm_number
         buyer_information["BuyerAddress"] = payment_details.buyer_address if payment_details.buyer_address
 
-        response = RestClient.post payment_details.redirect_url ? DIRECT3D_PAYMENT_URL : DIRECT_PAYMENT_URL,
+        response = RestClient.post payment_details.redirect_url ? $DIRECT3D_PAYMENT_URL : $DIRECT_PAYMENT_URL,
         {
           "PaymentDealerAuthentication": payment_dealer_authentication,
           "PaymentDealerRequest": payment_dealer_request,
@@ -87,7 +87,7 @@ module Moka
           "ClientIP": capture_details.client_ip
         }
 
-        response = RestClient.post CAPTURE_PAYMENT_URL,
+        response = RestClient.post $CAPTURE_PAYMENT_URL,
         {
           "PaymentDealerAuthentication": payment_dealer_authentication,
           "PaymentDealerRequest": payment_dealer_request
@@ -110,7 +110,7 @@ module Moka
         payment_dealer_request["PaymentStatus"] = payment_list_details.payment_status.to_i if payment_list_details.payment_status
         payment_dealer_request["TrxStatus"] = payment_list_details.trx_status.to_i if payment_list_details.trx_status
 
-        response = RestClient.post GET_PAYMENT_LIST_URL,
+        response = RestClient.post $GET_PAYMENT_LIST_URL,
         {
           "PaymentDealerAuthentication": payment_dealer_authentication,
           "PaymentDealerRequest": payment_dealer_request
@@ -138,14 +138,13 @@ module Moka
       		"Address": customer_details.address
         }
 
-        response = RestClient.post ADD_CUSTOMER_URL,
+        response = RestClient.post $ADD_CUSTOMER_URL,
         {
           "DealerCustomerAuthentication": dealer_customer_authentication,
           "DealerCustomerRequest": dealer_customer_request
         }
         return JSON.parse(response.body)
       end
-
     end
   end
 end
