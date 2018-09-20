@@ -3,7 +3,7 @@ require 'pp'
 
 module Moka
   class Test < Minitest::Test
-    include Minitest::Hooks
+    #include Minitest::Hooks
     def setup
       Moka.configure env: :test do |config|
         config.dealer_code = "1730"#ENV['MOKA_DEALER_CODE']

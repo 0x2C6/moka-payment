@@ -28,50 +28,50 @@ module Moka
          }
       end
 
-      def payment_dealer_authentication(payment_details)
+      def dealer_authentication(details)
         {
-          "DealerCode": payment_details.dealer_code,
-          "Username": payment_details.username,
-          "Password": payment_details.password,
-          "CheckKey": payment_details.check_key
+          "DealerCode": details.dealer_code,
+          "Username": details.username,
+          "Password": details.password,
+          "CheckKey": details.check_key
         }
       end
 
-      def direct_payment(payment_details)
+      def direct_payment(details)
         payment_dealer_request = {
-          "CardHolderFullName": payment_details.card_holder_full_name,
-          "CardNumber": payment_details.card_number,
-          "ExpMonth": payment_details.exp_month,
-          "ExpYear": payment_details.exp_year,
-          "CvcNumber": payment_details.cvc_number,
-          "Amount": payment_details.amount,
-          "Currency": payment_details.currency,
-          "InstallmentNumber": payment_details.installment_number,
-          "IsPreAuth": payment_details.is_pre_auth
+          "CardHolderFullName": details.card_holder_full_name,
+          "CardNumber": details.card_number,
+          "ExpMonth": details.exp_month,
+          "ExpYear": details.exp_year,
+          "CvcNumber": details.cvc_number,
+          "Amount": details.amount,
+          "Currency": details.currency,
+          "InstallmentNumber": details.installment_number,
+          "IsPreAuth": details.is_pre_auth
         }
 
         ["CardNumber", "ExpMonth", "ExpMonth", "CvcNumber"].each do |detail|
           payment_dealer_request.delete(detail.to_sym)
-        end && payment_dealer_request["CardToken"] = payment_details.card_token if payment_details.card_token
+        end && payment_dealer_request["CardToken"] = details.card_token if details.card_token
 
-        payment_dealer_request["RedirectUrl"] = payment_details.redirect_url if payment_details.redirect_url
-        payment_dealer_request["RedirectType "] = payment_details.redirect_type if payment_details.redirect_type
-        payment_dealer_request["ClientIP"] = payment_details.client_ip if payment_details.client_ip
-        payment_dealer_request["OtherTrxCode"] = payment_details.other_trx_code if payment_details.other_trx_code
-        payment_dealer_request["IsPoolPayment"] = payment_details.is_pool_payment if payment_details.is_pool_payment
-        payment_dealer_request["IntegratorId"] = payment_details.integrator_id if payment_details.integrator_id
-        payment_dealer_request["Software"] = payment_details.software if payment_details.software
-        payment_dealer_request["Description"] = payment_details.description if payment_details.description
+        payment_dealer_request["RedirectUrl"] = details.redirect_url if details.redirect_url
+        payment_dealer_request["RedirectType "] = details.redirect_type if details.redirect_type
+        payment_dealer_request["ClientIP"] = details.client_ip if details.client_ip
+        payment_dealer_request["OtherTrxCode"] = details.other_trx_code if details.other_trx_code
+        payment_dealer_request["IsPoolPayment"] = details.is_pool_payment if details.is_pool_payment
+        payment_dealer_request["IntegratorId"] = details.integrator_id if details.integrator_id
+        payment_dealer_request["Software"] = details.software if details.software
+        payment_dealer_request["Description"] = details.description if details.description
 
         buyer_information = {}
-        buyer_information["BuyerFullName"] = payment_details.buyer_full_name if payment_details.buyer_full_name
-        buyer_information["BuyerEmail"] = payment_details.buyer_email if payment_details.buyer_email
-        buyer_information["BuyerGsmNumber"] = payment_details.buyer_gsm_number if payment_details.buyer_gsm_number
-        buyer_information["BuyerAddress"] = payment_details.buyer_address if payment_details.buyer_address
+        buyer_information["BuyerFullName"] = details.buyer_full_name if details.buyer_full_name
+        buyer_information["BuyerEmail"] = details.buyer_email if details.buyer_email
+        buyer_information["BuyerGsmNumber"] = details.buyer_gsm_number if details.buyer_gsm_number
+        buyer_information["BuyerAddress"] = details.buyer_address if details.buyer_address
 
-        response = RestClient.post payment_details.redirect_url ? $DIRECT3D_PAYMENT_URL : $DIRECT_PAYMENT_URL,
+        response = RestClient.post details.redirect_url ? $DIRECT3D_PAYMENT_URL : $DIRECT_PAYMENT_URL,
         {
-          "PaymentDealerAuthentication": payment_dealer_authentication(payment_details),
+          "PaymentDealerAuthentication": dealer_authentication(details),
           "PaymentDealerRequest": payment_dealer_request,
           "BuyerInformation": buyer_information
         }
@@ -104,35 +104,28 @@ module Moka
 
         response = RestClient.post $GET_PAYMENT_LIST_URL,
         {
-          "PaymentDealerAuthentication": payment_dealer_authentication(payment_details),
+          "PaymentDealerAuthentication": dealer_authentication(details),
           "PaymentDealerRequest": payment_dealer_request
         }
         return JSON.parse(response.body)
       end
 
-      def add_user(customer_details)
-        dealer_customer_authentication = {
-          "DealerCode": customer_details.dealer_code,
-          "Username": customer_details.username,
-          "Password": customer_details.password,
-          "CheckKey": customer_details.check_key
-        }
-
+      def add_user(details)
         dealer_customer_request = {
-          "CustomerCode": customer_details.customer_code,
-      		"Password": customer_details.customer_password,
-      		"FirstName": customer_details.first_name,
-      		"LastName": customer_details.last_name,
-      		"Gender": customer_details.gender,
-      		"BirthDate": customer_details.birth_date,
-      		"GsmNumber": customer_details.gsm_number,
-      		"Email": customer_details.email,
-      		"Address": customer_details.address
+          "CustomerCode": details.customer_code,
+      		"Password": details.customer_password,
+      		"FirstName": details.first_name,
+      		"LastName": details.last_name,
+      		"Gender": details.gender,
+      		"BirthDate": details.birth_date,
+      		"GsmNumber": details.gsm_number,
+      		"Email": details.email,
+      		"Address": details.address
         }
 
         response = RestClient.post $ADD_CUSTOMER_URL,
         {
-          "DealerCustomerAuthentication": dealer_customer_authentication,
+          "DealerCustomerAuthentication": dealer_authentication(details),
           "DealerCustomerRequest": dealer_customer_request
         }
         return JSON.parse(response.body)
