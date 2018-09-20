@@ -1,4 +1,5 @@
 require "moka_test"
+require 'pp'
 
 class MokaDirectPaymentTest < Moka::Test
   def setup

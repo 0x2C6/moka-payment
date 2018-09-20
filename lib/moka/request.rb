@@ -4,9 +4,9 @@ require 'pp'
 
 module Moka
   module Request
-    class << self  
+    class << self
       def set_env
-        $SERVICE_URL = Moka.config.env == 'production' ? 
+        $SERVICE_URL = Moka.config.env == 'production' ?
         "https://service.moka.com" :
         "https://service.testmoka.com"
 
@@ -28,14 +28,16 @@ module Moka
          }
       end
 
-      def direct_payment(payment_details)
-        payment_dealer_authentication = {
+      def payment_dealer_authentication(payment_details)
+        {
           "DealerCode": payment_details.dealer_code,
           "Username": payment_details.username,
           "Password": payment_details.password,
           "CheckKey": payment_details.check_key
         }
+      end
 
+      def direct_payment(payment_details)
         payment_dealer_request = {
           "CardHolderFullName": payment_details.card_holder_full_name,
           "CardNumber": payment_details.card_number,
@@ -69,7 +71,7 @@ module Moka
 
         response = RestClient.post payment_details.redirect_url ? $DIRECT3D_PAYMENT_URL : $DIRECT_PAYMENT_URL,
         {
-          "PaymentDealerAuthentication": payment_dealer_authentication,
+          "PaymentDealerAuthentication": payment_dealer_authentication(payment_details),
           "PaymentDealerRequest": payment_dealer_request,
           "BuyerInformation": buyer_information
         }
@@ -77,13 +79,6 @@ module Moka
       end
 
       def capture(capture_details)
-        payment_dealer_authentication = {
-          "DealerCode": capture_details.dealer_code,
-          "Username": capture_details.username,
-          "Password": capture_details.password,
-          "CheckKey": capture_details.check_key
-        }
-
         payment_dealer_request = {
           "VirtualPosOrderId": capture_details.virtual_pos_order_id,
           "OtherTrxCode": capture_details.other_trx_code || "",
@@ -93,20 +88,13 @@ module Moka
 
         response = RestClient.post $CAPTURE_PAYMENT_URL,
         {
-          "PaymentDealerAuthentication": payment_dealer_authentication,
+          "PaymentDealerAuthentication": payment_dealer_authentication(capture_details),
           "PaymentDealerRequest": payment_dealer_request
         }
         return JSON.parse(response.body)
       end
 
       def get_payment_list(payment_list_details)
-        payment_dealer_authentication = {
-          "DealerCode": payment_list_details.dealer_code,
-          "Username": payment_list_details.username,
-          "Password": payment_list_details.password,
-          "CheckKey": payment_list_details.check_key
-        }
-
         payment_dealer_request = {
           "PaymentStartDate": payment_list_details.payment_start_date,
           "PaymentEndDate": payment_list_details.payment_end_date,
@@ -116,7 +104,7 @@ module Moka
 
         response = RestClient.post $GET_PAYMENT_LIST_URL,
         {
-          "PaymentDealerAuthentication": payment_dealer_authentication,
+          "PaymentDealerAuthentication": payment_dealer_authentication(payment_details),
           "PaymentDealerRequest": payment_dealer_request
         }
         return JSON.parse(response.body)
