@@ -1,9 +1,8 @@
-require 'moka/payment/payment'
+require 'moka/payment'
 
 module Moka
   module Payment
     class Direct < Moka::Payment::Payment
-
       def initialize(details = {})
         super
         @card_holder_full_name = details[:card_number]
@@ -34,7 +33,6 @@ module Moka
         @payment_details = Moka::Payment::Direct.new
         super @payment_details
       end
-
     end
   end
 end

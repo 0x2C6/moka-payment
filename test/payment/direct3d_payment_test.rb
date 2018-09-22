@@ -1,9 +1,10 @@
 require "moka_test"
+require "pp"
 
-class MokaDirectPaymentTest < Moka::Test
+class MokaDirect3DPaymentTest < Moka::Test
   def setup
     super
-    @direct_payment = Moka::Payment::Direct.details do |detail|
+    @direct_payment = Moka::Payment::Direct3D.details do |detail|
       detail.card_holder_full_name = "Ali Yılmaz"
       detail.card_number = "5269552233334444"
       detail.exp_month = "12"
@@ -11,6 +12,7 @@ class MokaDirectPaymentTest < Moka::Test
       detail.cvc_number = "123"
       detail.amount = 35.5
       detail.currency = "TL"
+      detail.redirect_url = "http://aaaa.com"
       detail.installment_number = "1"
       detail.client_ip = "195.155.96.234"
       detail.other_trx_code = "123456"
@@ -27,28 +29,16 @@ class MokaDirectPaymentTest < Moka::Test
     end
   end
 
-  def test_should_pay_direct_successfully
+  def test_should_pay_direct3d_successfully
     @direct_payment.pay
     assert @direct_payment.success?
-    assert !@direct_payment.errors.message
   end
 
-  def test_should_decline_payment
-    @direct_payment.card_number = "5555666677778888"
-    @direct_payment.pay
-    assert !@direct_payment.success?
-  end
-
-  def test_should_raise_request_error
-    @direct_payment.card_number = "5555666677778888"
-    @direct_payment.pay
-    assert_equal @direct_payment.errors.message, "PaymentDealer.CheckCardInfo.InvalidCardInfo"
-  end
-
-  def test_should_raise_null_payment_information_error
-    @direct_payment.card_number = nil
-    assert_raises Moka::Error::NullPaymentInformation do
+  def test_should_raise_null_redirect_url
+    @direct_payment.redirect_url = nil
+    assert_raises Moka::Error::NullRedirectUrl do
       @direct_payment.pay
     end
   end
+
 end
