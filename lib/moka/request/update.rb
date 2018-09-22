@@ -1,6 +1,7 @@
-module Moka::Request::Add
-  def add_customer(details)
+module Moka::Request::Update
+  def update_customer(details)
     dealer_customer_request = {
+      "DealerCustomerId": details.dealer_customer_id,
       "CustomerCode": details.customer_code,
       "Password": details.customer_password,
       "FirstName": details.first_name,
@@ -12,7 +13,7 @@ module Moka::Request::Add
       "Address": details.address
     }
 
-    response = RestClient.post $ADD_CUSTOMER_URL,
+    response = RestClient.post $UPDATE_CUSTOMER_URL,
     {
       "DealerCustomerAuthentication": dealer_authentication(details),
       "DealerCustomerRequest": dealer_customer_request

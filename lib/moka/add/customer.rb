@@ -1,5 +1,6 @@
 require 'moka/request'
 require 'moka/configuration'
+require 'moka/error'
 
 module Moka
   module Add
@@ -37,11 +38,15 @@ module Moka
       end
 
       def add
-        @@response = Moka::Request.add_user(@@customer_details)
+        raise Moka::Error::NullRequiredParameter if [@customer_code, @first_name].any? { |d| d.nil? } 
+        @@response = Moka::Request.add_customer(@@customer_details)
         if success?
           @dealer_customer_id = @@response["Data"]["DealerCustomer"]["DealerCustomerId"]
           @card_list_count = @@response["Data"]["CardListCount"]
           @card_list = @@response["Data"]["CardList"]
+        else
+          @error = Moka::Error::RequestError.new
+          @error = @@response["ResultCode"] unless @@response["Data"]
         end
         return @@response
       end
@@ -55,10 +60,14 @@ module Moka
       end
 
       def success?
-       if @@response["ResultCode"] == "Success"
-         return true
-       end if @@response
-       return false
+        if @@response["ResultCode"] == "Success"
+          return true
+        end if @@response
+        return false
+      end
+
+      def errors
+        @error
       end
     end
   end
