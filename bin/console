@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 
-$: << "../lib"
-require "bundler/setup"
-Bundler.require
-require "moka"
-require "irb"
+require 'bundler/setup'
+require 'moka'
+require 'irb'
 
 IRB.start

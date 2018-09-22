@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 
-$: << "../lib"
-require "bundler/setup"
+$: << '../lib'
+require 'bundler/setup'
 Bundler.require
-require "moka"
-require "sinatra"
+require 'moka'
+require 'sinatra'
 
 
 get '/' do
