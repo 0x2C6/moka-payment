@@ -71,7 +71,6 @@ module Moka
       def errors
         @error
       end
-      
     end
   end
 end

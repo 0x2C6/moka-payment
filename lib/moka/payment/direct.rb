@@ -1,4 +1,4 @@
-require 'moka/payment/payment'
+require 'moka/payment'
 
 module Moka
   module Payment

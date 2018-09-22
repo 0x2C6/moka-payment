@@ -8,7 +8,7 @@ module Moka
                     :customer_code, :customer_password, :first_name,
                     :last_name, :gender, :birth_date, :gsm_number,
                     :email, :address
-      attr_reader   :dealer_customer_id, :card_list_count, :card_list                    
+      attr_reader   :dealer_customer_id, :card_list_count, :card_list
 
       def initialize(details = {})
         @dealer_code = Moka.config.dealer_code
@@ -49,9 +49,6 @@ module Moka
       def response
         @@response
       end
-
-      # def dealer_custom_id 
-      # end
 
       def request_details
         @@customer_details

@@ -1,4 +1,4 @@
-require "minitest"
+require 'moka_test'
 
 class MokaGetPaymentListTest < Moka::Test
   def setup
