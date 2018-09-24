@@ -1,4 +1,4 @@
-require "moka_test"
+require 'moka_test'
 
 class MokaCapturePaymentTest < Moka::Test
   def setup
@@ -21,7 +21,7 @@ class MokaCapturePaymentTest < Moka::Test
     @capture_payment.virtual_pos_order_id = "Test-99622117-5834-4d0e-8248-849a33b6bdcf"
     @capture_payment.capture
     assert !@capture_payment.success?
-    assert_equal @capture_payment.errors.message, "PaymentDealer.DoCapture.CaptureNotAvailable"
+    assert_equal @capture_payment.error.message, "PaymentDealer.DoCapture.CaptureNotAvailable"
   end
 
 end

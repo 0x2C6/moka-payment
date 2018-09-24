@@ -27,7 +27,7 @@ class MokaAddCusomerTest < Moka::Test
     @customer.customer_code = "Customer"
     @customer.add
     assert !@customer.success?
-    assert_equal @customer.errors, "DealerCustomer.AddCustomer.CustomerCodeAlreadyUsing"
+    assert_equal @customer.error, "DealerCustomer.AddCustomer.CustomerCodeAlreadyUsing"
   end
 
   def test_should_raise_error

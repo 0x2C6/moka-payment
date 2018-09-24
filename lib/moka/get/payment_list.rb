@@ -51,7 +51,6 @@ module Moka
         end if @@response
         return 0
       end
-
     end
   end
 end

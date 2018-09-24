@@ -13,10 +13,11 @@ module Moka
     end
 
     def get_check_key
+      required_params = [ @dealer_code, @username, @password ]
+      raise Moka::Error::NullRequiredParameter if required_params.any? { |params| params.nil? }
       return @check_key = Moka::Request.get_check_key(
           @dealer_code, @username, @password
-        ).body unless [ @dealer_code, @username, @password ].any? { |key| key.nil? }
-      raise "Error" # Hamsi gonderilmelidi ona uygun xeta yarad
+        ).body
     end
   end
 end

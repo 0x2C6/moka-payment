@@ -20,31 +20,31 @@ module Moka
       end
 
       def pay
-        return raise Moka::Error::NotDirectOrDirect3DPayment unless @@payment_details.is_a?(Moka::Payment::Direct) ||
+        raise Moka::Error::NotDirectOrDirect3DPayment unless @@payment_details.is_a?(Moka::Payment::Direct) ||
         @@payment_details.is_a?(Moka::Payment::Direct3D)
-        return raise Moka::Error::NullRedirectUrl if @@payment_details.is_a?(Moka::Payment::Direct3D) &&
+        raise Moka::Error::NullRedirectUrl if @@payment_details.is_a?(Moka::Payment::Direct3D) &&
         @@payment_details.redirect_url.nil?
-        non_blank_details = [
+        required_params = [
           @dealer_code, @username, @password, @check_key,
           @card_holder_full_name, @card_token, @amount
         ]
 
         unless @card_token
-          non_blank_details.delete(@card_token)
-          non_blank_details.push(@card_number, @exp_month, @exp_year, @cvc_number)
+          required_params.delete(@card_token)
+          required_params.push(@card_number, @exp_month, @exp_year, @cvc_number)
         end
 
         if @@payment_details.is_a? Moka::Payment::Direct3D
-          non_blank_details.push(@redirect_url)
+          required_params.push(@redirect_url)
         else
           @@payment_details.redirect_url = nil
         end
 
-        return raise Moka::Error::NullPaymentInformation if non_blank_details.any? {|detail| detail.nil?}
-        @response = Moka::Request.direct_payment(@@payment_details)
+        raise Moka::Error::NullPaymentInformation if required_params.any? {|param| param.nil?}
+        @@response = Moka::Request.direct_payment(@@payment_details)
         @error = Moka::Error::RequestError.new
-        @error.message = @response["ResultCode"] unless @response["Data"]
-        return @response
+        @error.message = @@response["ResultCode"] unless @@response["Data"]
+        return @@response
       end
 
       def self.details(details)
@@ -54,7 +54,7 @@ module Moka
       end
 
       def response
-        @response
+        @@response
       end
 
       def request_details
@@ -62,13 +62,13 @@ module Moka
       end
 
       def success?
-        if @response["Data"]
-          return true if @response["Data"]["IsSuccessful"]
+        if @@response["Data"]
+          return true if @@response["Data"]["IsSuccessful"]
         end
         return false
       end
 
-      def errors
+      def error
         @error
       end
     end

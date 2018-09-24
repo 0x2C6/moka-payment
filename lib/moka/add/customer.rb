@@ -66,7 +66,7 @@ module Moka
         return false
       end
 
-      def errors
+      def error
         @error
       end
     end

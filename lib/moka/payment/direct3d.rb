@@ -32,12 +32,12 @@ module Moka
       end
 
       def success?
-       return true if @response["ResultCode"] == "Success"
+       return true if @@response["ResultCode"] == "Success"
        return false
       end
 
       def verify_payment_url
-        return @response["Data"] if @response["Data"]
+        return @@response["Data"] if @@response["Data"]
         return false
       end
 

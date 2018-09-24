@@ -1,4 +1,4 @@
-require "moka_test"
+require 'moka_test'
 require 'pp'
 
 class MokaDirectPaymentTest < Moka::Test
@@ -31,7 +31,7 @@ class MokaDirectPaymentTest < Moka::Test
   def test_should_pay_direct_successfully
     @direct_payment.pay
     assert @direct_payment.success?
-    assert !@direct_payment.errors.message
+    assert !@direct_payment.error.message
   end
 
   def test_should_decline_payment
@@ -43,7 +43,7 @@ class MokaDirectPaymentTest < Moka::Test
   def test_should_raise_request_error
     @direct_payment.card_number = "5555666677778888"
     @direct_payment.pay
-    assert_equal @direct_payment.errors.message, "PaymentDealer.CheckCardInfo.InvalidCardInfo"
+    assert_equal @direct_payment.error.message, "PaymentDealer.CheckCardInfo.InvalidCardInfo"
   end
 
   def test_should_raise_null_payment_information_error
