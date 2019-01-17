@@ -8,21 +8,22 @@ require 'sinatra'
 
 
 get '/' do
-  Moka.configure do |config|
+  Moka.configure env: :test do |config|
     config.dealer_code = ENV['MOKA_DEALER_CODE']
     config.username = ENV['MOKA_USERNAME']
     config.password = ENV['MOKA_PASSWORD']
   end
 
+  puts ENV['MOKA_USERNAME']
   @direct_payment = Moka::Payment::Direct3D.details do |detail|
     detail.card_holder_full_name = "Ali Yılmaz"
     detail.card_number = "5269552233334444"
     detail.exp_month = "12"
     detail.exp_year = "2022"
-    detail.cvc_number = "123"
+    detail.cvc_number = "000"
     detail.amount = 35.5
     detail.currency = "TL"
-    detail.redirect_url = "https://ed0767d7.ngrok.io/payment?MyTrxId=1A2B3CD456"
+    detail.redirect_url = "https://359d70db.ngrok.io/payment?MyTrxId=1A2B3CD456"
     detail.installment_number = "1"
     detail.client_ip = "195.155.96.234"
     detail.other_trx_code = "123456"

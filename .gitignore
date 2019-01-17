@@ -7,6 +7,5 @@
 /spec/reports/
 /tmp/
 Gemfile.lock
-*gemspec
 .rake_tasks~
 /test/moka_test.rb
