@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-$: << '../lib'
+$: << File.expand_path('./lib')
 require 'moka'
 require 'sinatra'
 

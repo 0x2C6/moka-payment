@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
-$: << '../lib'
+$: << File.expand_path('./lib')
 require 'moka'
-require 'pp'
 
 Moka.configure env: :test do |config|
   config.dealer_code = ENV['MOKA_DEALER_CODE']
@@ -33,14 +32,13 @@ direct_payment = Moka::Payment::Direct.details do |detail|
   detail.buyer_address = "New York City"
 end
 
-puts direct_payment.request_details
 direct_payment.pay
 puts direct_payment.response
 
 if direct_payment.success?
-  "Paid Succesfully"
+  puts "Paid Succesfully"
 else
-  "Payment Declined"
+  puts "Payment Declined"
 end
 puts direct_payment.error
 pp direct_payment.request_details

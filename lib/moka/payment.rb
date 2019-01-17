@@ -47,8 +47,8 @@ module Moka::Payment
       if base.to_s == "Moka::Payment::Capture"
         def capture
           @@response = Moka::Request.capture(@@payment_details)
-          @error = Moka::Error::RequestError.new
-          @error.message = @response["ResultCode"] unless @@response["Data"]
+          @@error = Moka::Error::RequestError.new
+          @@error.message = @@response["ResultCode"] unless @@response["Data"]
           return @@response
         end
       else
