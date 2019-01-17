@@ -73,8 +73,8 @@ module Moka::Payment
 
           raise Moka::Error::NullPaymentInformation if required_params.any? {|param| param.nil?}
           @@response = Moka::Request.direct_payment(@@payment_details)
-          @error = Moka::Error::RequestError.new
-          @error.message = @@response["ResultCode"] unless @@response["Data"]
+          @@error = Moka::Error::RequestError.new
+          @@error.message = @@response["ResultCode"] unless @@response["Data"]
           return @@response
         end
       end
@@ -94,7 +94,7 @@ module Moka::Payment
       end
 
       def error
-        @error
+        @@error
       end
 
       def success?
