@@ -14,7 +14,6 @@ get '/' do
     config.password = ENV['MOKA_PASSWORD']
   end
 
-  puts ENV['MOKA_USERNAME']
   @direct_payment = Moka::Payment::Direct3D.details do |detail|
     detail.card_holder_full_name = "Ali Yılmaz"
     detail.card_number = "5269552233334444"
@@ -38,8 +37,10 @@ get '/' do
     detail.buyer_gsm_number = "1111111111"
     detail.buyer_address = "New York City"
   end
+
   @direct_payment.pay
   puts @direct_payment.response
+
   if @direct_payment.success?
     redirect @direct_payment.verify_payment_url
   end
