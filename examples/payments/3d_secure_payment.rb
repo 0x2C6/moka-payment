@@ -1,11 +1,8 @@
 #!/usr/bin/env ruby
 
-$: << '../lib'
-require 'bundler/setup'
-Bundler.require
+$: << File.expand_path('./lib')
 require 'moka'
 require 'sinatra'
-
 
 get '/' do
   Moka.configure env: :test do |config|
@@ -14,7 +11,7 @@ get '/' do
     config.password = ENV['MOKA_PASSWORD']
   end
 
-  @direct_payment = Moka::Payment::Direct3D.details do |detail|
+  direct_payment = Moka::Payment::Direct3D.details do |detail|
     detail.card_holder_full_name = "Ali Yılmaz"
     detail.card_number = "5269552233334444"
     detail.exp_month = "12"
@@ -22,7 +19,7 @@ get '/' do
     detail.cvc_number = "000"
     detail.amount = 35.5
     detail.currency = "TL"
-    detail.redirect_url = "https://359d70db.ngrok.io/payment?MyTrxId=1A2B3CD456"
+    detail.redirect_url = "https://7b9fd81b.ngrok.io/payment?MyTrxId=1A2B3CD456"
     detail.installment_number = "1"
     detail.client_ip = "195.155.96.234"
     detail.other_trx_code = "123456"
@@ -38,11 +35,13 @@ get '/' do
     detail.buyer_address = "New York City"
   end
 
-  @direct_payment.pay
-  puts @direct_payment.response
+  direct_payment.pay
+  puts direct_payment.response
 
-  if @direct_payment.success?
-    redirect @direct_payment.verify_payment_url
+  if direct_payment.success?
+    redirect direct_payment.verify_payment_url
+  else
+    "Payment Declined"
   end
 end
 

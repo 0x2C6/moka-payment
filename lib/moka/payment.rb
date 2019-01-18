@@ -47,8 +47,8 @@ module Moka::Payment
       if base.to_s == "Moka::Payment::Capture"
         def capture
           @@response = Moka::Request.capture(@@payment_details)
-          @error = Moka::Error::RequestError.new
-          @error.message = @response["ResultCode"] unless @@response["Data"]
+          @@error = Moka::Error::RequestError.new
+          @@error.message = @@response["ResultCode"] unless @@response["Data"]
           return @@response
         end
       else
@@ -73,8 +73,8 @@ module Moka::Payment
 
           raise Moka::Error::NullPaymentInformation if required_params.any? {|param| param.nil?}
           @@response = Moka::Request.direct_payment(@@payment_details)
-          @error = Moka::Error::RequestError.new
-          @error.message = @@response["ResultCode"] unless @@response["Data"]
+          @@error = Moka::Error::RequestError.new
+          @@error.message = @@response["ResultCode"] unless @@response["Data"]
           return @@response
         end
       end
@@ -94,14 +94,33 @@ module Moka::Payment
       end
 
       def error
-        @error
+        @@error
       end
 
-      def success?
-        if @@response["Data"]
-          return true if @@response["Data"]["IsSuccessful"]
+      if base.to_s == "Moka::Payment::Direct3D"
+        def success?
+         return true if @@response["ResultCode"] == "Success"
+         return false
         end
-        return false
+
+        def verify_payment_url
+          return @@response["Data"] if @@response["Data"]
+          return false
+        end
+
+        def self.paid_successfully?(params)
+          unless params["isSuccessful"] == "False"
+            return params
+          end
+          return false
+        end
+      else
+        def success?
+          if @@response["Data"]
+            return true if @@response["Data"]["IsSuccessful"]
+          end
+          return false
+        end
       end
     end
   end
