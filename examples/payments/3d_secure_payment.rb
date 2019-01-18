@@ -40,6 +40,8 @@ get '/' do
 
   if direct_payment.success?
     redirect direct_payment.verify_payment_url
+  else
+    "Payment Declined"
   end
 end
 

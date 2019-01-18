@@ -10,7 +10,7 @@ Moka.configure env: :test do |config|
 end
 
 capture_payment = Moka::Payment::Capture.details do |detail|
-  detail.virtual_pos_order_id = "Test-502bf86e-2f5e-46ca-bd5a-87cdfb3af1f7"
+  detail.virtual_pos_order_id = "Your-Virtual-Pos-Order-ID"
   detail.other_trx_code = ""
   detail.amount = 35.5
   detail.client_ip = "195.155.96.234"

@@ -97,11 +97,30 @@ module Moka::Payment
         @@error
       end
 
-      def success?
-        if @@response["Data"]
-          return true if @@response["Data"]["IsSuccessful"]
+      if base.to_s == "Moka::Payment::Direct3D"
+        def success?
+         return true if @@response["ResultCode"] == "Success"
+         return false
         end
-        return false
+
+        def verify_payment_url
+          return @@response["Data"] if @@response["Data"]
+          return false
+        end
+
+        def self.paid_successfully?(params)
+          unless params["isSuccessful"] == "False"
+            return params
+          end
+          return false
+        end
+      else
+        def success?
+          if @@response["Data"]
+            return true if @@response["Data"]["IsSuccessful"]
+          end
+          return false
+        end
       end
     end
   end
